@@ -48,24 +48,15 @@
         "tags": ["users: Gerenciamento de usuários"],
         "summary": "Retorna todos os usuários",
         "description": "Somente usuário admin pode acessar",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "user_id": {
-                    "type": "string"
-                  }
-                },
-                "example": {
-                  "user_id": "982347539428675"
-                }
-              }
-            }
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Operação realizada com sucesso.",
@@ -96,12 +87,35 @@
                       }
                     }
                   }
+                },
+                "example": {
+                  "admin": true,
+                  "id": "9c47d6c5-d360-4b70-b00a-291537f0413f",
+                  "name": "Rafael Quartaroli",
+                  "email": "rafael@gmail.com",
+                  "created_at": "2021-11-30T22:29:01.014Z",
+                  "updated_at": "2021-11-30T22:29:31.014Z"
                 }
               }
             }
           },
           "400": {
-            "description": "Usuário sem permissão ou Usuário não encontrado."
+            "description": "Usuário sem permissão ou Usuário não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "You need to be an administrator to list all users."
+                  }
+                }
+              }
+            }
           }
         }
       }      
@@ -110,24 +124,16 @@
       "get": {
         "tags": ["users: Gerenciamento de usuários"],
         "summary": "Retorna um usuário específico.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "user_id": {
-                    "type": "string"
-                  }
-                },
-                "example": {
-                  "user_id": "982347539428675"
-                }
-              }
-            }
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID do usuário",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Operação realizada com sucesso.",
@@ -157,7 +163,12 @@
                   }
                 },
                 "example": {
-                  "user_id": "982347539428675"
+                  "admin": false,
+                  "id": "9c47d6c5-d360-4b70-b00a-291537f0413f",
+                  "name": "Rafael Quartaroli",
+                  "email": "rafael@gmail.com",
+                  "created_at": "2021-11-30T22:29:01.014Z",
+                  "updated_at": "2021-11-30T22:29:01.014Z"
                 }
               }
             }
@@ -172,6 +183,9 @@
                     "error": {
                       "type": "string"
                     }
+                  },
+                  "example": {
+                    "error": "User not found."
                   }
                 }
               }
@@ -181,27 +195,19 @@
       }      
     },
     "/users/{user_id}/admin": {
-      "get": {
+      "patch": {
         "tags": ["users: Gerenciamento de usuários"],
         "summary": "Torna admin um usuário.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "user_id": {
-                    "type": "string"
-                  }
-                },
-                "example": {
-                  "user_id": "982347539428675"
-                }
-              }
-            }
+        "operationId": "admin",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Operação realizada com sucesso.",
@@ -231,7 +237,12 @@
                   }
                 },
                 "example": {
-                  "user_id": "982347539428675"
+                  "admin": true,
+                  "id": "9c47d6c5-d360-4b70-b00a-291537f0413f",
+                  "name": "Rafael Quartaroli",
+                  "email": "rafael@gmail.com",
+                  "created_at": "2021-11-30T22:29:01.014Z",
+                  "updated_at": "2021-11-30T22:29:31.014Z"
                 }
               }
             }
